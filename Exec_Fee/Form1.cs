@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace Exec_Fee
 {
     public partial class Form1 : Form
@@ -33,48 +35,58 @@ namespace Exec_Fee
 				MessageBox.Show(ex.Message);
 				return;
 			}
-			
+
 
             // 根據客戶性別及年齡計算應付車資
-            /* 規則如下:
+            var result = GatFee(age, gender); 
+            
+            // 呈現結果
+            resultLabel.Text = result.ToString();
+        }
+        /// <summary>
+        /// 依年齡性別計算車資
+        /// </summary>
+        /// <param name="age">年齡</param>
+        /// <param name="gender">性別</param>
+        /// <returns></returns>
+        private object GatFee(int age, bool gender)
+        {
+			/* 規則如下:
              * - <=3 零元
              * - >=70, 男, 2元
              * - >=60, 女, 3元
              * - 全票, 15元*/
+			decimal aldultFee = 15,
+				oldMan = 70, oldWoman = 3;
+			decimal fare = 0;
+			string reason = string.Empty; // 原因
 
-            decimal aldult = 15,
-                oldMan = 70, oldWoman = 3;
-            decimal fare = 0;
-            string reason = string.Empty; // 原因
-
-            if (age >= 70 && gender == true)
-            {
-                fare = oldMan;
-                reason = "超過七十歲男性";            
-            }
-            else if (age >= 60 && gender == false)
-            { 
-                fare = oldWoman;
-                reason = "超過六十歲女性";
+			if (age >= oldMan && gender == true)
+			{
+				fare = oldMan;
+				reason = "超過七十歲男性";
+			}
+			else if (age >= oldWoman && gender == false)
+			{
+				fare = oldWoman;
+				reason = "超過六十歲女性";
 			}
 			else if (age <= 3)
-            { 
-                fare = 0;
+			{
+				fare = 0;
 				reason = "年齡沒有滿三歲";
 			}
-            else 
-            { 
-                fare = aldult;
-                if (gender == true)
-                { reason = "年齡超過三歲，\n且沒有滿七十歲"; }
-                else 
-                { reason = "年齡超過三歲，\n且沒有滿六十歲"; }
+			else
+			{
+				fare = aldultFee;
+				if (gender == true)
+				{ reason = "年齡超過三歲，\n且沒有滿七十歲"; }
+				else
+				{ reason = "年齡超過三歲，\n且沒有滿六十歲"; }
 			}
-
-            // 呈現結果
-            resultLabel.Text = $"車資: {fare}\r\n" +
+            return $"車資: {fare}\r\n" +
                $"原因: \r\n{reason}";
-        }
+		}
 
         private bool GetGender()
         {
