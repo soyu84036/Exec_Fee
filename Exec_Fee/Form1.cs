@@ -51,38 +51,38 @@ namespace Exec_Fee
         /// <returns></returns>
         private object GatFee(int age, bool gender)
         {
-			/* 規則如下:
+            /* 規則如下:
              * - <=3 零元
              * - >=70, 男, 2元
              * - >=60, 女, 3元
              * - 全票, 15元*/
-			decimal aldultFee = 15,
-				oldMan = 70, oldWoman = 3;
-			decimal fare = 0;
+            decimal fare = 0,
+                aldultFee = 15, oldManFee = 2, oldWomanFee = 3;
+            int oldManAge = 70, oldWomanAge = 60, kidAge = 3;
 			string reason = string.Empty; // 原因
 
-			if (age >= oldMan && gender == true)
+			if (age >= oldManAge && gender == true)
 			{
-				fare = oldMan;
-				reason = "超過七十歲男性";
+				fare = oldManFee;
+				reason = $"超過{oldManAge}歲男性";
 			}
-			else if (age >= oldWoman && gender == false)
+			else if (age >= oldWomanAge && gender == false)
 			{
-				fare = oldWoman;
-				reason = "超過六十歲女性";
+				fare = oldWomanFee;
+				reason = $"超過{oldWomanAge}歲女性";
 			}
-			else if (age <= 3)
+			else if (age <= kidAge)
 			{
 				fare = 0;
-				reason = "年齡沒有滿三歲";
+				reason = $"年齡沒有滿{kidAge}歲";
 			}
 			else
 			{
 				fare = aldultFee;
 				if (gender == true)
-				{ reason = "年齡超過三歲，\n且沒有滿七十歲"; }
+				{ reason = $"年齡超過{kidAge}歲，\n且沒有滿{oldManAge}歲"; }
 				else
-				{ reason = "年齡超過三歲，\n且沒有滿六十歲"; }
+				{ reason = $"年齡超過{kidAge}歲，\n且沒有滿{oldWomanAge}歲"; }
 			}
             return $"車資: {fare}\r\n" +
                $"原因: \r\n{reason}";
